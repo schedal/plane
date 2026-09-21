@@ -47,6 +47,20 @@ export function HeaderColumn(props: Props) {
 
   if (!propertyDetails) return null;
 
+  const ascendingOrderKey = propertyDetails.ascendingOrderKey;
+  const descendingOrderKey = propertyDetails.descendingOrderKey;
+
+  // Non-sortable columns (e.g. time tracking, whose data is not part of the
+  // issues queryset) render a static header without the sorting menu.
+  if (!ascendingOrderKey || !descendingOrderKey) {
+    return (
+      <Row className="flex w-full items-center gap-1.5 px-page-x py-2 text-13 text-secondary">
+        <SpreadSheetPropertyIcon iconKey={propertyDetails.icon} className="h-4 w-4 text-placeholder" />
+        {t(propertyDetails.i18n_title)}
+      </Row>
+    );
+  }
+
   return (
     <CustomMenu
       customButtonClassName="clickable !w-full"
@@ -61,7 +75,7 @@ export function HeaderColumn(props: Props) {
           <div className="ml-3 flex">
             {activeSortingProperty === property && (
               <div className="flex h-3.5 w-3.5 items-center justify-center rounded-full">
-                {propertyDetails.ascendingOrderKey === displayFilters.order_by ? (
+                {ascendingOrderKey === displayFilters.order_by ? (
                   <ArrowDownWideNarrow className="h-3 w-3" />
                 ) : (
                   <ArrowUpNarrowWide className="h-3 w-3" />
@@ -76,10 +90,10 @@ export function HeaderColumn(props: Props) {
       placement="bottom-start"
       closeOnSelect
     >
-      <CustomMenu.MenuItem onClick={() => handleOrderBy(propertyDetails.ascendingOrderKey, property)}>
+      <CustomMenu.MenuItem onClick={() => handleOrderBy(ascendingOrderKey, property)}>
         <div
           className={`flex items-center justify-between gap-1.5 px-1 ${
-            selectedMenuItem === `${propertyDetails.ascendingOrderKey}_${property}`
+            selectedMenuItem === `${ascendingOrderKey}_${property}`
               ? "text-primary"
               : "text-secondary hover:text-primary"
           }`}
@@ -91,13 +105,13 @@ export function HeaderColumn(props: Props) {
             <span>{propertyDetails.descendingOrderTitle}</span>
           </div>
 
-          {selectedMenuItem === `${propertyDetails.ascendingOrderKey}_${property}` && <CheckIcon className="h-3 w-3" />}
+          {selectedMenuItem === `${ascendingOrderKey}_${property}` && <CheckIcon className="h-3 w-3" />}
         </div>
       </CustomMenu.MenuItem>
-      <CustomMenu.MenuItem onClick={() => handleOrderBy(propertyDetails.descendingOrderKey, property)}>
+      <CustomMenu.MenuItem onClick={() => handleOrderBy(descendingOrderKey, property)}>
         <div
           className={`flex items-center justify-between gap-1.5 px-1 ${
-            selectedMenuItem === `${propertyDetails.descendingOrderKey}_${property}`
+            selectedMenuItem === `${descendingOrderKey}_${property}`
               ? "text-primary"
               : "text-secondary hover:text-primary"
           }`}
@@ -109,9 +123,7 @@ export function HeaderColumn(props: Props) {
             <span>{propertyDetails.ascendingOrderTitle}</span>
           </div>
 
-          {selectedMenuItem === `${propertyDetails.descendingOrderKey}_${property}` && (
-            <CheckIcon className="h-3 w-3" />
-          )}
+          {selectedMenuItem === `${descendingOrderKey}_${property}` && <CheckIcon className="h-3 w-3" />}
         </div>
       </CustomMenu.MenuItem>
       {selectedMenuItem &&

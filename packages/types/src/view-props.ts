@@ -175,6 +175,8 @@ export interface IIssueDisplayProperties {
   modules?: boolean;
   cycle?: boolean;
   issue_type?: boolean;
+  time_estimate?: boolean;
+  time_spent?: boolean;
 }
 
 export type TIssueKanbanFilters = {

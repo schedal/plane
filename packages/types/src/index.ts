@@ -22,6 +22,7 @@ export * from "./enums";
 export * from "./epics";
 export * from "./estimate";
 export * from "./favorite";
+export * from "./fctime";
 export * from "./file";
 export * from "./home";
 export * from "./importer";

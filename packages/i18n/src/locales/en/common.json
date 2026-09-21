@@ -867,5 +867,11 @@
       "description": "Export work items to a JSON file.",
       "short_description": "Export as json"
     }
-  }
+  },
+  "time_estimate": "Time estimate",
+  "time_spent": "Time spent",
+  "log_time": "Log time",
+  "total_estimate": "Total estimate",
+  "total_time_spent": "Total time spent",
+  "time_entries": "Time entries"
 }

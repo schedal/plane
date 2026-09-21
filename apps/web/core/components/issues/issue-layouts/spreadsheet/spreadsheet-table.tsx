@@ -7,11 +7,14 @@
 import type { MutableRefObject } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react";
+import { useParams } from "next/navigation";
 // plane imports
 import type { IIssueDisplayFilterOptions, IIssueDisplayProperties, TIssue } from "@plane/types";
 // components
 import { SpreadsheetIssueRowLoader } from "@/components/ui/loader/layouts/spreadsheet-layout-loader";
 // hooks
+import { useTimeTracking } from "@/hooks/store/use-time";
+import { useIssues } from "@/hooks/store/use-issues";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 import { useIssuesStore } from "@/hooks/use-issue-layout-store";
 import type { TSelectionHelper } from "@/hooks/use-multiple-select";
@@ -21,6 +24,7 @@ import type { TRenderQuickActions } from "../list/list-view-types";
 import { getDisplayPropertiesCount } from "../utils";
 import { SpreadsheetIssueRow } from "./issue-row";
 import { SpreadsheetHeader } from "./spreadsheet-header";
+import { SpreadsheetTotalsRow } from "./spreadsheet-totals-row";
 
 type Props = {
   displayProperties: IIssueDisplayProperties;
@@ -66,6 +70,30 @@ export const SpreadsheetTable = observer(function SpreadsheetTable(props: Props)
   const {
     issues: { getIssueLoader },
   } = useIssuesStore();
+  // router
+  const { workspaceSlug } = useParams();
+  // store hooks
+  const { issueMap } = useIssues();
+  const { fetchTimeSummary } = useTimeTracking();
+
+  const areTimeColumnsVisible = !!(displayProperties.time_estimate || displayProperties.time_spent);
+
+  // Bulk-fetch the time summary for the visible issues. Re-runs whenever the
+  // visible issue set (or its project mapping) changes; the store dedupes
+  // ids that have already been fetched.
+  const summaryInputKey = issueIds
+    .map((id) => (issueMap[id]?.project_id ? `${id}:${issueMap[id]?.project_id}` : ""))
+    .join(",");
+  useEffect(() => {
+    if (!areTimeColumnsVisible || !workspaceSlug) return;
+    const summaryInput = issueIds
+      .map((id) => issueMap[id])
+      .filter((issue) => !!issue)
+      .map((issue) => ({ id: issue.id, project_id: issue.project_id }));
+    if (summaryInput.length === 0) return;
+    fetchTimeSummary(workspaceSlug.toString(), summaryInput).catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [areTimeColumnsVisible, workspaceSlug, summaryInputKey, fetchTimeSummary]);
 
   const handleScroll = useCallback(() => {
     if (!containerRef.current) return;
@@ -142,13 +170,21 @@ export const SpreadsheetTable = observer(function SpreadsheetTable(props: Props)
           />
         ))}
       </tbody>
-      {canLoadMoreIssues && (
+      {canLoadMoreIssues || areTimeColumnsVisible ? (
         <tfoot ref={setIntersectionElement}>
-          {Array.from({ length: 3 }).map((_, index) => (
-            <SpreadsheetIssueRowLoader key={index} columnCount={displayPropertiesCount} />
-          ))}
+          {areTimeColumnsVisible && (
+            <SpreadsheetTotalsRow
+              issueIds={issueIds}
+              displayProperties={displayProperties}
+              spreadsheetColumnsList={spreadsheetColumnsList}
+            />
+          )}
+          {canLoadMoreIssues &&
+            ["loader-1", "loader-2", "loader-3"].map((loaderKey) => (
+              <SpreadsheetIssueRowLoader key={loaderKey} columnCount={displayPropertiesCount} />
+            ))}
         </tfoot>
-      )}
+      ) : null}
     </table>
   );
 });

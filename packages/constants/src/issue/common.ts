@@ -33,6 +33,7 @@ export enum EIssueGroupByToServerOptions {
   "cycle" = "cycle_id",
   "module" = "issue_module__module_id",
   "target_date" = "target_date",
+  // eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
   "project" = "project_id",
   "created_by" = "created_by",
   // eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
@@ -156,6 +157,8 @@ export const ISSUE_DISPLAY_PROPERTIES_KEYS: (keyof IIssueDisplayProperties)[] = 
   "modules",
   "cycle",
   "issue_type",
+  "time_estimate",
+  "time_spent",
 ];
 
 export const SUB_ISSUES_DISPLAY_PROPERTIES_KEYS: (keyof IIssueDisplayProperties)[] = [
@@ -208,6 +211,8 @@ export const ISSUE_DISPLAY_PROPERTIES: {
   },
   { key: "modules", titleTranslationKey: "common.module" },
   { key: "cycle", titleTranslationKey: "common.cycle" },
+  { key: "time_estimate", titleTranslationKey: "common.time_estimate" },
+  { key: "time_spent", titleTranslationKey: "common.time_spent" },
 ];
 
 export const SPREADSHEET_PROPERTY_LIST: (keyof IIssueDisplayProperties)[] = [
@@ -225,14 +230,16 @@ export const SPREADSHEET_PROPERTY_LIST: (keyof IIssueDisplayProperties)[] = [
   "link",
   "attachment_count",
   "sub_issue_count",
+  "time_estimate",
+  "time_spent",
 ];
 
 export const SPREADSHEET_PROPERTY_DETAILS: {
   [key in keyof IIssueDisplayProperties]: {
     i18n_title: string;
-    ascendingOrderKey: TIssueOrderByOptions;
+    ascendingOrderKey: TIssueOrderByOptions | null;
     ascendingOrderTitle: string;
-    descendingOrderKey: TIssueOrderByOptions;
+    descendingOrderKey: TIssueOrderByOptions | null;
     descendingOrderTitle: string;
     icon: string;
   };
@@ -348,6 +355,24 @@ export const SPREADSHEET_PROPERTY_DETAILS: {
     descendingOrderKey: "sub_issues_count",
     descendingOrderTitle: "Least",
     icon: "LayersIcon",
+  },
+  // time tracking columns are not server-sortable (data comes from the
+  // fctime time-summary endpoint, not the issues queryset)
+  time_estimate: {
+    i18n_title: "common.time_estimate",
+    ascendingOrderKey: null,
+    ascendingOrderTitle: "",
+    descendingOrderKey: null,
+    descendingOrderTitle: "",
+    icon: "TimerIcon",
+  },
+  time_spent: {
+    i18n_title: "common.time_spent",
+    ascendingOrderKey: null,
+    ascendingOrderTitle: "",
+    descendingOrderKey: null,
+    descendingOrderTitle: "",
+    icon: "ClockIcon",
   },
 };
 
