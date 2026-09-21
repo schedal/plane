@@ -257,7 +257,7 @@ export const IssueDefaultProperties = observer(function IssueDefaultProperties(p
                 projectId={projectId}
                 buttonVariant="border-with-text"
                 tabIndex={getIndex("estimate_point")}
-                placeholder={t("estimate")}
+                placeholder={t("common.effort_estimate")}
               />
             </div>
           )}

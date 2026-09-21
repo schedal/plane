@@ -5,6 +5,8 @@
  */
 
 import { observer } from "mobx-react";
+// i18n
+import { useTranslation } from "@plane/i18n";
 // types
 import type { TIssue } from "@plane/types";
 // components
@@ -19,6 +21,8 @@ type Props = {
 
 export const SpreadsheetEstimateColumn = observer(function SpreadsheetEstimateColumn(props: Props) {
   const { issue, onChange, disabled, onClose } = props;
+  // i18n
+  const { t } = useTranslation();
 
   return (
     <div className="h-11 border-b-[0.5px] border-subtle">
@@ -27,7 +31,7 @@ export const SpreadsheetEstimateColumn = observer(function SpreadsheetEstimateCo
         onChange={(data) =>
           onChange(issue, { estimate_point: data }, { changed_property: "estimate_point", change_details: data })
         }
-        placeholder="Estimate"
+        placeholder={t("common.effort_estimate")}
         projectId={issue.project_id ?? undefined}
         disabled={disabled}
         buttonVariant="transparent-with-text"
