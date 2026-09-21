@@ -717,7 +717,13 @@
     "developer": "Developer",
     "work_structure": "Work structure",
     "execution": "Execution",
-    "administration": "Administration"
+    "administration": "Administration",
+    "effort_estimate": "추정",
+    "time_estimate": "추정",
+    "time_spent": "Spent",
+    "log_time": "Log time",
+    "time_entries": "Time entries",
+    "time_tracking": "시간 추적"
   },
   "chart": {
     "x_axis": "X축",

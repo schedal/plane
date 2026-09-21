@@ -207,7 +207,7 @@ export const ISSUE_DISPLAY_PROPERTIES: {
   { key: "link", titleTranslationKey: "common.link" },
   {
     key: "estimate",
-    titleTranslationKey: "common.estimate",
+    titleTranslationKey: "common.effort_estimate",
   },
   { key: "modules", titleTranslationKey: "common.module" },
   { key: "cycle", titleTranslationKey: "common.cycle" },
@@ -269,7 +269,7 @@ export const SPREADSHEET_PROPERTY_DETAILS: {
     icon: "DueDatePropertyIcon",
   },
   estimate: {
-    i18n_title: "common.estimate",
+    i18n_title: "common.effort_estimate",
     ascendingOrderKey: "estimate_point__key",
     ascendingOrderTitle: "Low",
     descendingOrderKey: "-estimate_point__key",

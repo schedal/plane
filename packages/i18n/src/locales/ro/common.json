@@ -717,7 +717,13 @@
     "developer": "Developer",
     "work_structure": "Work structure",
     "execution": "Execution",
-    "administration": "Administration"
+    "administration": "Administration",
+    "effort_estimate": "Estimare",
+    "time_estimate": "Estimare",
+    "time_spent": "Spent",
+    "log_time": "Log time",
+    "time_entries": "Time entries",
+    "time_tracking": "Monitorizare timp"
   },
   "chart": {
     "x_axis": "axa-X",

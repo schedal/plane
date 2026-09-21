@@ -717,7 +717,13 @@
     "developer": "Developer",
     "work_structure": "Work structure",
     "execution": "Execution",
-    "administration": "Administration"
+    "administration": "Administration",
+    "effort_estimate": "Ước tính",
+    "time_estimate": "Ước tính",
+    "time_spent": "Spent",
+    "log_time": "Log time",
+    "time_entries": "Time entries",
+    "time_tracking": "Theo dõi thời gian"
   },
   "chart": {
     "x_axis": "Trục X",
